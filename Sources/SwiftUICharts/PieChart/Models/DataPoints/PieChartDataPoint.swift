@@ -21,7 +21,8 @@ public struct PieChartDataPoint: CTPieDataPoint {
     public var startAngle: Double = 0
     public var amount: Double = 0
     public var legendTag: String = ""
-    
+    public var xPosition: Double? = nil
+
     /// Data model for a single data point for a pie chart.
     /// - Parameters:
     ///   - value: Value of the data point

@@ -18,6 +18,7 @@ internal struct LineShape<DP>: Shape where DP: CTStandardDataPointProtocol & Ign
     private let minValue: Double
     private let range: Double
     private let ignoreZero: Bool
+    private let relativeXAxis: Bool
     
     internal init(
         dataPoints: [DP],
@@ -25,7 +26,8 @@ internal struct LineShape<DP>: Shape where DP: CTStandardDataPointProtocol & Ign
         isFilled: Bool,
         minValue: Double,
         range: Double,
-        ignoreZero: Bool
+        ignoreZero: Bool,
+        relativeXAxis: Bool = false
     ) {
         self.dataPoints = dataPoints
         self.lineType = lineType
@@ -33,6 +35,7 @@ internal struct LineShape<DP>: Shape where DP: CTStandardDataPointProtocol & Ign
         self.minValue = minValue
         self.range = range
         self.ignoreZero = ignoreZero
+        self.relativeXAxis = relativeXAxis
     }
     
     internal func path(in rect: CGRect) -> Path {
@@ -40,7 +43,7 @@ internal struct LineShape<DP>: Shape where DP: CTStandardDataPointProtocol & Ign
         case .curvedLine:
             switch ignoreZero {
             case false:
-                return Path.curvedLine(rect: rect, dataPoints: dataPoints, minValue: minValue, range: range, isFilled: isFilled)
+                return Path.curvedLine(rect: rect, dataPoints: dataPoints, minValue: minValue, range: range, isFilled: isFilled, relativeXAxis: relativeXAxis)
             case true:
                 return Path.curvedLineIgnoreZero(rect: rect, dataPoints: dataPoints, minValue: minValue, range: range, isFilled: isFilled)
             }

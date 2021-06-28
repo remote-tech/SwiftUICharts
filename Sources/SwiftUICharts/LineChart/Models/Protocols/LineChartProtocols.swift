@@ -103,6 +103,8 @@ public protocol CTLineChartDataSet: CTSingleDataSetProtocol {
      is applied.
      */
     var pointStyle: PointStyle { get set }
+    
+    var relativeXAxis: Bool { get set }
 }
 
 /**

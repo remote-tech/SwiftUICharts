@@ -52,7 +52,8 @@ extension Path {
         dataPoints: [DP],
         minValue: Double,
         range: Double,
-        isFilled: Bool
+        isFilled: Bool,
+        relativeXAxis: Bool = false
     ) -> Path {
         let x: CGFloat = rect.width / CGFloat(dataPoints.count - 1)
         let y: CGFloat = rect.height / CGFloat(range)
@@ -66,7 +67,10 @@ extension Path {
         var lastIndex: Int = 0
         
         for index in 1 ..< dataPoints.count {
-            let nextPoint = CGPoint(x: CGFloat(index) * x,
+            
+            let xOffset = relativeXAxis ? rect.width * CGFloat(dataPoints[index].xPosition ?? 0) : CGFloat(index) * x
+            
+            let nextPoint = CGPoint(x: xOffset,
                                     y: (CGFloat(dataPoints[index].value - minValue) * -y) + rect.height)
             path.addCurve(to: nextPoint,
                           control1: CGPoint(x: previousPoint.x + (nextPoint.x - previousPoint.x) / 2,
@@ -77,6 +81,7 @@ extension Path {
             previousPoint = nextPoint
         }
         if isFilled {
+            
             path.addLine(to: CGPoint(x: CGFloat(lastIndex) * x,
                                      y: rect.height))
             path.addLine(to: CGPoint(x: 0,

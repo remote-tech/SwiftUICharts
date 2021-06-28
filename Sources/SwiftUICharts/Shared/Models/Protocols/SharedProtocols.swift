@@ -212,6 +212,10 @@ public protocol CTStandardDataPointProtocol: CTDataPointBaseProtocol {
      Value of the data point
      */
     var value: Double { get set }
+    /**
+      0 - 1 value representing the X position, only used if relativeXPosition is true on dataset
+     */
+    var xPosition: Double? { get set}
 }
 
 /**

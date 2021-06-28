@@ -47,7 +47,8 @@ internal struct LineChartColourSubView<CD, DS>: View where CD: CTLineChartDataPr
                   isFilled: isFilled,
                   minValue: minValue,
                   range: range,
-                  ignoreZero: dataSet.style.ignoreZero)
+                  ignoreZero: dataSet.style.ignoreZero,
+                  relativeXAxis: dataSet.relativeXAxis)
             .ifElse(isFilled, if: {
                 $0.scale(y: startAnimation ? 1 : 0, anchor: .bottom)
                     .fill(colour)

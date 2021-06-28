@@ -20,7 +20,8 @@ public struct RangedLineDataSet: CTRangedLineChartDataSet, DataFunctionsProtocol
     public var legendFillTitle: String
     public var pointStyle: PointStyle
     public var style: RangedLineStyle
-    
+    public var relativeXAxis: Bool
+
     /// Initialises a data set for a line in a ranged line chart.
     /// - Parameters:
     ///   - dataPoints: Array of elements.
@@ -33,13 +34,15 @@ public struct RangedLineDataSet: CTRangedLineChartDataSet, DataFunctionsProtocol
         legendTitle: String = "",
         legendFillTitle: String = "",
         pointStyle: PointStyle = PointStyle(),
-        style: RangedLineStyle = RangedLineStyle()
+        style: RangedLineStyle = RangedLineStyle(),
+        relativeXAxis: Bool = false
     ) {
         self.dataPoints = dataPoints
         self.legendTitle = legendTitle
         self.legendFillTitle = legendFillTitle
         self.pointStyle = pointStyle
         self.style = style
+        self.relativeXAxis = relativeXAxis
     }
     
     public typealias ID = UUID
