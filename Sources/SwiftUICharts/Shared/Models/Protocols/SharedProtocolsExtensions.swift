@@ -57,7 +57,7 @@ extension CTChartData {
         self.infoView.isTouchCurrent = true
         self.infoView.touchLocation = touchLocation
         self.infoView.chartSize = chartSize
-        self.getDataPoint(touchLocation: touchLocation, chartSize: chartSize)
+        self.getDataPoint(touchLocation: touchLocation, chartSize: chartSize, isTouchEndPoint: false)
     }
 }
 

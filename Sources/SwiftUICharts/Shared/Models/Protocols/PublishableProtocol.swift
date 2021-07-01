@@ -24,4 +24,5 @@ public protocol Publishable {
      Uses Combine
      */
     var touchedDataPointPublisher: PassthroughSubject<DataPoint, Never> { get }
+    var touchedEndDataPointPublisher: PassthroughSubject<DataPoint, Never> { get }
 }

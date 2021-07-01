@@ -21,6 +21,7 @@ public struct BarChartDataPoint: CTStandardBarDataPoint {
     public var date: Date?
     public var colour: ColourStyle
     public var legendTag: String = ""
+    public var userData: String?
     
     public var xPosition: Double? = nil
     // MARK: - Single colour
@@ -36,13 +37,15 @@ public struct BarChartDataPoint: CTStandardBarDataPoint {
         xAxisLabel: String? = nil,
         description: String? = nil,
         date: Date? = nil,
-        colour: ColourStyle = ColourStyle(colour: .red)
+        colour: ColourStyle = ColourStyle(colour: .red),
+        userData: String? = nil
     ) {
         self.value = value
         self.xAxisLabel = xAxisLabel
         self.description = description
         self.date = date
         self.colour = colour
+        self.userData = userData
     }
     
     public typealias ID = UUID

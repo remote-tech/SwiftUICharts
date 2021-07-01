@@ -40,9 +40,11 @@ internal struct TouchOverlay<T>: ViewModifier where T: CTChartData {
                                         chartData.setTouchInteraction(touchLocation: value.location,
                                                                       chartSize: geo.frame(in: .local))
                                     }
-                                    .onEnded { _ in
+                                    .onEnded { value in
                                         chartData.infoView.isTouchCurrent = false
                                         chartData.infoView.touchOverlayInfo = []
+                                        
+                                        chartData.getDataPoint(touchLocation: value.location, chartSize: geo.frame(in: .local), isTouchEndPoint: true)
                                     }
                             )
                         if chartData.infoView.isTouchCurrent {

@@ -26,7 +26,8 @@ public final class DoughnutChartData: CTDoughnutChartDataProtocol, Publishable {
     // Publishable
     public var subscription = SubscriptionSet().subscription
     public let touchedDataPointPublisher = PassthroughSubject<DataPoint,Never>()
-    
+    public let touchedEndDataPointPublisher = PassthroughSubject<DataPoint,Never>()
+
     public final var noDataText: Text
     public final var chartType: (chartType: ChartType, dataSetType: DataSetType)
     
@@ -65,7 +66,7 @@ public final class DoughnutChartData: CTDoughnutChartDataProtocol, Publishable {
 
 // MARK: - Touch
 extension DoughnutChartData {
-    public final func getDataPoint(touchLocation: CGPoint, chartSize: CGRect) {
+    public final func getDataPoint(touchLocation: CGPoint, chartSize: CGRect, isTouchEndPoint: Bool = false) {
         let touchDegree = degree(from: touchLocation, in: chartSize)
         let index = self.dataSets.dataPoints.firstIndex(where:) {
             let start = $0.startAngle * Double(180 / Double.pi) <= Double(touchDegree)

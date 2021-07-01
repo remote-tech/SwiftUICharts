@@ -35,7 +35,8 @@ public final class MultiLineChartData: CTLineChartDataProtocol, GetDataProtocol,
     // Publishable
     public var subscription = SubscriptionSet().subscription
     public let touchedDataPointPublisher = PassthroughSubject<DataPoint,Never>()
-    
+    public let touchedEndDataPointPublisher = PassthroughSubject<DataPoint,Never>()
+
     // MARK: Initializers
     /// Initialises a Multi Line Chart.
     ///
@@ -186,7 +187,7 @@ extension MultiLineChartData {
         return nil
     }
     
-    public func getDataPoint(touchLocation: CGPoint, chartSize: CGRect) {
+    public func getDataPoint(touchLocation: CGPoint, chartSize: CGRect, isTouchEndPoint: Bool = false) {
         self.infoView.touchOverlayInfo = dataSets.dataSets.indices.compactMap { setIndex in
             let xSection: CGFloat = chartSize.width / CGFloat(dataSets.dataSets[setIndex].dataPoints.count - 1)
             let index = Int((touchLocation.x + (xSection / 2)) / xSection)

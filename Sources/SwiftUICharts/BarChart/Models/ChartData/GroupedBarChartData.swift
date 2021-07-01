@@ -35,7 +35,8 @@ public final class GroupedBarChartData: CTMultiBarChartDataProtocol, GetDataProt
     // Publishable
     public var subscription = SubscriptionSet().subscription
     public let touchedDataPointPublisher = PassthroughSubject<DataPoint,Never>()
-    
+    public let touchedEndDataPointPublisher = PassthroughSubject<DataPoint,Never>()
+
     public final var noDataText: Text
     public final var chartType: (chartType: ChartType, dataSetType: DataSetType)
     
@@ -143,7 +144,7 @@ public final class GroupedBarChartData: CTMultiBarChartDataProtocol, GetDataProt
         self.markerSubView()
     }
     
-    public final func getDataPoint(touchLocation: CGPoint, chartSize: CGRect) {
+    public final func getDataPoint(touchLocation: CGPoint, chartSize: CGRect, isTouchEndPoint: Bool = false) {
         // Divide the chart into equal sections.
         let superXSection: CGFloat = (chartSize.width / CGFloat(dataSets.dataSets.count))
         let superIndex: Int = Int((touchLocation.x) / superXSection)
@@ -161,7 +162,11 @@ public final class GroupedBarChartData: CTMultiBarChartDataProtocol, GetDataProt
             if subIndex >= 0 && subIndex < dataSets.dataSets[index].dataPoints.count {
                 dataSets.dataSets[index].dataPoints[subIndex].legendTag = dataSets.dataSets[index].setTitle
                 self.infoView.touchOverlayInfo = [dataSets.dataSets[index].dataPoints[subIndex]]
-                touchedDataPointPublisher.send(dataSets.dataSets[index].dataPoints[subIndex])
+                if isTouchEndPoint {
+                    touchedEndDataPointPublisher.send(dataSets.dataSets[index].dataPoints[subIndex])
+                } else {
+                    touchedDataPointPublisher.send(dataSets.dataSets[index].dataPoints[subIndex])
+                }
             }
         }
     }

@@ -30,7 +30,8 @@ public final class HorizontalBarChartData: CTHorizontalBarChartDataProtocol, Get
     // Publishable
     public var subscription = SubscriptionSet().subscription
     public let touchedDataPointPublisher = PassthroughSubject<DataPoint,Never>()
-    
+    public let touchedEndDataPointPublisher = PassthroughSubject<DataPoint,Never>()
+
     public final var noDataText: Text
     public final let chartType: (chartType: ChartType, dataSetType: DataSetType)
     
@@ -166,7 +167,7 @@ public final class HorizontalBarChartData: CTHorizontalBarChartDataProtocol, Get
         self.markerSubView()
     }
     
-    public final func getDataPoint(touchLocation: CGPoint, chartSize: CGRect) {
+    public final func getDataPoint(touchLocation: CGPoint, chartSize: CGRect, isTouchEndPoint: Bool = false) {
         let ySection: CGFloat = chartSize.height / CGFloat(dataSets.dataPoints.count)
         let index: Int = Int((touchLocation.y) / ySection)
         if index >= 0 && index < dataSets.dataPoints.count {

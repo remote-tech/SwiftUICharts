@@ -26,6 +26,7 @@ public final class PieChartData: CTPieChartDataProtocol, Publishable {
     // Publishable
     public var subscription = SubscriptionSet().subscription
     public let touchedDataPointPublisher = PassthroughSubject<DataPoint,Never>()
+    public let touchedEndDataPointPublisher = PassthroughSubject<DataPoint,Never>()
     
     public final var noDataText: Text
     public final var chartType: (chartType: ChartType, dataSetType: DataSetType)
@@ -66,7 +67,7 @@ public final class PieChartData: CTPieChartDataProtocol, Publishable {
 // MARK: - Touch
 extension PieChartData {
     
-    public final func getDataPoint(touchLocation: CGPoint, chartSize: CGRect) {
+    public final func getDataPoint(touchLocation: CGPoint, chartSize: CGRect, isTouchEndPoint: Bool = false) {
         let touchDegree = degree(from: touchLocation, in: chartSize)
         let index = self.dataSets.dataPoints.firstIndex(where:) {
             let start = $0.startAngle * Double(180 / Double.pi) <= Double(touchDegree)

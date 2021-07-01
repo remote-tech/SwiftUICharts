@@ -35,7 +35,8 @@ public final class RangedLineChartData: CTLineChartDataProtocol, GetDataProtocol
     // Publishable
     public var subscription = SubscriptionSet().subscription
     public let touchedDataPointPublisher = PassthroughSubject<DataPoint,Never>()
-    
+    public let touchedEndDataPointPublisher = PassthroughSubject<DataPoint,Never>()
+
     // MARK: Initializer
     /// Initialises a ranged line chart.
     ///
@@ -167,7 +168,7 @@ public final class RangedLineChartData: CTLineChartDataProtocol, GetDataProtocol
         return nil
     }
     
-    public final func getDataPoint(touchLocation: CGPoint, chartSize: CGRect) {
+    public final func getDataPoint(touchLocation: CGPoint, chartSize: CGRect, isTouchEndPoint: Bool = false) {
         let xSection: CGFloat = chartSize.width / CGFloat(dataSets.dataPoints.count - 1)
         let index = Int((touchLocation.x + (xSection / 2)) / xSection)
         if index >= 0 && index < dataSets.dataPoints.count {

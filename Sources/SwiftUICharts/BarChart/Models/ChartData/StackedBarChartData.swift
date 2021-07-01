@@ -34,7 +34,8 @@ public final class StackedBarChartData: CTMultiBarChartDataProtocol, GetDataProt
     // Publishable
     public var subscription = SubscriptionSet().subscription
     public let touchedDataPointPublisher = PassthroughSubject<DataPoint,Never>()
-    
+    public let touchedEndDataPointPublisher = PassthroughSubject<DataPoint,Never>()
+
     public final var noDataText: Text
     public final var chartType: (chartType: ChartType, dataSetType: DataSetType)
     
@@ -133,7 +134,7 @@ public final class StackedBarChartData: CTMultiBarChartDataProtocol, GetDataProt
         self.markerSubView()
     }
     
-    public final func getDataPoint(touchLocation: CGPoint, chartSize: CGRect) {
+    public final func getDataPoint(touchLocation: CGPoint, chartSize: CGRect, isTouchEndPoint: Bool = false) {
         // Filter to get the right dataset based on the x axis.
         let superXSection: CGFloat = chartSize.width / CGFloat(dataSets.dataSets.count)
         let superIndex: Int = Int((touchLocation.x) / superXSection)

@@ -109,7 +109,7 @@ public protocol CTChartData: ObservableObject, Identifiable {
      - chartSize: The size of the chart view as the parent view.
      - Returns: Array of data points.
      */
-    func getDataPoint(touchLocation: CGPoint, chartSize: CGRect)
+    func getDataPoint(touchLocation: CGPoint, chartSize: CGRect, isTouchEndPoint: Bool)
     
     /**
      Gets the location of the data point in the view.

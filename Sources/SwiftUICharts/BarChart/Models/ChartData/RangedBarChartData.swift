@@ -30,7 +30,8 @@ public final class RangedBarChartData: CTRangedBarChartDataProtocol, GetDataProt
     // Publishable
     public var subscription = SubscriptionSet().subscription
     public let touchedDataPointPublisher = PassthroughSubject<DataPoint,Never>()
-    
+    public let touchedEndDataPointPublisher = PassthroughSubject<DataPoint,Never>()
+
     public final var noDataText: Text
     public final let chartType: (chartType: ChartType, dataSetType: DataSetType)
     
@@ -137,13 +138,17 @@ public final class RangedBarChartData: CTRangedBarChartDataProtocol, GetDataProt
         self.markerSubView()
     }
     
-    public final func getDataPoint(touchLocation: CGPoint, chartSize: CGRect) {
+    public final func getDataPoint(touchLocation: CGPoint, chartSize: CGRect, isTouchEndPoint: Bool = false) {
         let xSection: CGFloat = chartSize.width / CGFloat(dataSets.dataPoints.count)
         let index: Int = Int((touchLocation.x) / xSection)
         if index >= 0 && index < dataSets.dataPoints.count {
             dataSets.dataPoints[index].legendTag = dataSets.legendTitle
             self.infoView.touchOverlayInfo = [dataSets.dataPoints[index]]
-            touchedDataPointPublisher.send(dataSets.dataPoints[index])
+            if isTouchEndPoint {
+                touchedEndDataPointPublisher.send(dataSets.dataPoints[index])
+            } else {
+                touchedDataPointPublisher.send(dataSets.dataPoints[index])
+            }
         }
     }
     
