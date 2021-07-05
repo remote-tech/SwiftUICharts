@@ -90,7 +90,7 @@ public final class RangedBarChartData: CTRangedBarChartDataProtocol, GetDataProt
                 GeometryReader { geo in
                     ZStack {
                         ForEach(self.dataSets.dataPoints.indices) { i in
-                            if let label = self.dataSets.dataPoints[i].xAxisLabel {
+                            if i < self.dataSets.dataPoints.count, let label = self.dataSets.dataPoints[i].xAxisLabel {
                                 if label != "" {
                                     TempText(chartData: self, label: label, rotation: angle)
                                         .frame(width: self.getXSection(dataSet: self.dataSets, chartSize: geo.frame(in: .local)),

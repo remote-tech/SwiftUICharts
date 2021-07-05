@@ -51,9 +51,6 @@ public struct RangedBarChart<ChartData>: View where ChartData: RangedBarChartDat
     public init(chartData: ChartData) {
         self.chartData = chartData
     }
-    
-    @State private var offset = CGSize.zero
-    @State private var totalOffset = CGSize.zero
 
     public var body: some View {
         GeometryReader { geo in
@@ -66,18 +63,6 @@ public struct RangedBarChart<ChartData>: View where ChartData: RangedBarChartDat
                     case .dataPoints:
                         RangedBarChartDataPointSubView(chartData: chartData)
                             .accessibilityLabel(Text("\(chartData.metadata.title)"))
-                            .gesture(
-                                DragGesture()
-                                    .onChanged({ gesture in
-                                        self.offset = CGSize(width: gesture.translation.width/2, height: 0)
-                                    })
-                                    .onEnded({ gesture in
-                                        self.totalOffset = CGSize(width: self.totalOffset.width + gesture.translation.width/2, height: 0)
-                                        self.offset = CGSize.zero
-                                        
-                                    })
-                            )
-                            .offset(x: offset.width + totalOffset.width)
                     }
                 }
                 // Needed for axes label frames

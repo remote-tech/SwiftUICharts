@@ -14,6 +14,9 @@ internal struct XAxisLabels<T>: ViewModifier where T: CTLineBarChartDataProtocol
     
     @ObservedObject private var chartData: T
     
+    @State private var offset = CGSize.zero
+    @State private var totalOffset = CGSize.zero
+    
     internal init(chartData: T) {
         self.chartData = chartData
         self.chartData.viewData.hasXAxisLabels = true
@@ -40,6 +43,18 @@ internal struct XAxisLabels<T>: ViewModifier where T: CTLineBarChartDataProtocol
                 } else { content }
             }
         }
+        .gesture(
+            DragGesture()
+                .onChanged({ gesture in
+                    self.offset = CGSize(width: gesture.translation.width/2, height: 0)
+                })
+                .onEnded({ gesture in
+                    self.totalOffset = CGSize(width: self.totalOffset.width + gesture.translation.width/2, height: 0)
+                    self.offset = CGSize.zero
+                    
+                })
+        )
+        .offset(x: offset.width + totalOffset.width)
     }
 }
 
