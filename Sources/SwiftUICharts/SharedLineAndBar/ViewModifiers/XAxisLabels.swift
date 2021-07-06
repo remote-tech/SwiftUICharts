@@ -5,6 +5,7 @@
 //  Created by Will Dale on 26/12/2020.
 //
 
+import Foundation
 import SwiftUI
 
 /**
@@ -17,44 +18,68 @@ internal struct XAxisLabels<T>: ViewModifier where T: CTLineBarChartDataProtocol
     @State private var offset = CGSize.zero
     @State private var totalOffset = CGSize.zero
     
+    @State private var isLoad = true
+    
     internal init(chartData: T) {
         self.chartData = chartData
         self.chartData.viewData.hasXAxisLabels = true
     }
     
-    internal func body(content: Content) -> some View {
-        Group {
-            switch chartData.chartStyle.xAxisLabelPosition {
-            case .bottom:
-                if chartData.isGreaterThanTwo() {
-                    VStack {
-                        content
-                        chartData.getXAxisLabels().padding(.top, 2)
-                        chartData.getXAxisTitle()
-                    }
-                } else { content }
-            case .top:
-                if chartData.isGreaterThanTwo() {
-                    VStack {
-                        chartData.getXAxisTitle()
-                        chartData.getXAxisLabels().padding(.bottom, 2)
-                        content
-                    }
-                } else { content }
+    func scaleFactor() -> CGFloat {
+        if let chartData = chartData as? RangedBarChartData, let windowSize = chartData.windowSize, windowSize > 0 {
+            let totalPoints = chartData.dataSets.dataPoints.count
+            if totalPoints > 0, totalPoints < windowSize {
+                let factor = CGFloat(totalPoints) / CGFloat(windowSize)
+                return factor
             }
         }
-        .gesture(
-            DragGesture()
-                .onChanged({ gesture in
-                    self.offset = CGSize(width: gesture.translation.width/2, height: 0)
-                })
-                .onEnded({ gesture in
-                    self.totalOffset = CGSize(width: self.totalOffset.width + gesture.translation.width/2, height: 0)
-                    self.offset = CGSize.zero
+        
+        return 1
+    }
+    
+    func contentWidth(geo: GeometryProxy) -> CGFloat {
+        return geo.size.width * scaleFactor()
+    }
+    
+    internal func body(content: Content) -> some View {
+        GeometryReader { geo in
+            ScrollViewReader { proxy in
+                ScrollView(.horizontal) {
+                    Group {
+                        switch chartData.chartStyle.xAxisLabelPosition {
+                        case .bottom:
+                            if chartData.isGreaterThanTwo() {
+                                VStack {
+                                    content
+                                    chartData.getXAxisLabels().padding(.top, 2)
+                                    chartData.getXAxisTitle()
+                                }
+                                .frame(width: contentWidth(geo: geo), height: geo.size.height)
+                            } else { content }
+                        case .top:
+                            if chartData.isGreaterThanTwo() {
+                                VStack {
+                                    chartData.getXAxisTitle()
+                                    chartData.getXAxisLabels().padding(.bottom, 2)
+                                    content
+                                }
+                            } else { content }
+                        }
+                    }
                     
-                })
-        )
-        .offset(x: offset.width + totalOffset.width)
+                }
+                .onAppear {
+//                    chartData.dataSets.dataPoints[0]
+//                    if let chartData = chartData as? RangedBarChartData {
+//                        let index = Int(chartData.dataSets.dataPoints.count/2) - 1
+//                        if index < chartData.dataSets.dataPoints.count, index >= 0 {
+//                            let id = chartData.dataSets.dataPoints[Int(chartData.dataSets.dataPoints.count/2) - 1].id
+//                            proxy.scrollTo(id, anchor: .topLeading)
+//                        }
+//                    }
+                }
+            }
+        }
     }
 }
 

@@ -191,6 +191,7 @@ internal struct RangedBarChartDataPointSubView<CD:RangedBarChartData>: View {
                                              dataPoint: dataPoint,
                                              colour: colour,
                                              barSize: geo.frame(in: .local))
+                        .id(dataPoint.id)
                 } else if dataPoint.colour.colourType == .gradientColour,
                           let colours = dataPoint.colour.colours,
                           let startPoint = dataPoint.colour.startPoint,

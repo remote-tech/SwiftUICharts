@@ -15,6 +15,7 @@ public struct RangedBarDataSet: CTRangedBarChartDataSet, DataFunctionsProtocol {
     public var id: UUID = UUID()
     public var dataPoints: [RangedBarDataPoint]
     public var legendTitle: String
+    public var viewWindow: Int?
     
     /// Initialises a new data set for ranged bar chart.
     /// - Parameters:
@@ -22,10 +23,12 @@ public struct RangedBarDataSet: CTRangedBarChartDataSet, DataFunctionsProtocol {
     ///   - legendTitle: Label for the data in legend.
     public init(
         dataPoints: [RangedBarDataPoint],
-        legendTitle: String = ""
+        legendTitle: String = "",
+        viewWindow: Int? = nil
     ) {
         self.dataPoints = dataPoints
         self.legendTitle = legendTitle
+        self.viewWindow = viewWindow
     }
     
     public typealias ID = UUID

@@ -27,6 +27,9 @@ public final class RangedBarChartData: CTRangedBarChartDataProtocol, GetDataProt
     
     @Published public final var extraLineData: ExtraLineData!
     
+    // how many datapoints are visible from the entire dataset
+    @Published public var windowSize: Int?
+    
     // Publishable
     public var subscription = SubscriptionSet().subscription
     public let touchedDataPointPublisher = PassthroughSubject<DataPoint,Never>()
@@ -53,7 +56,8 @@ public final class RangedBarChartData: CTRangedBarChartDataProtocol, GetDataProt
         yAxisLabels: [String]? = nil,
         barStyle: BarStyle = BarStyle(),
         chartStyle: BarChartStyle = BarChartStyle(),
-        noDataText: Text = Text("No Data")
+        noDataText: Text = Text("No Data"),
+        windowSize: Int? = nil
     ) {
         self.dataSets = dataSets
         self.metadata = metadata
@@ -62,6 +66,7 @@ public final class RangedBarChartData: CTRangedBarChartDataProtocol, GetDataProt
         self.barStyle = barStyle
         self.chartStyle = chartStyle
         self.noDataText = noDataText
+        self.windowSize = windowSize
         
         self.legends = [LegendData]()
         self.viewData = ChartViewData()
