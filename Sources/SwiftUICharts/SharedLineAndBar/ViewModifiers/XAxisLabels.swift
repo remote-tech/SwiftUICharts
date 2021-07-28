@@ -28,7 +28,7 @@ internal struct XAxisLabels<T>: ViewModifier where T: CTLineBarChartDataProtocol
     func scaleFactor() -> CGFloat {
         if let chartData = chartData as? RangedBarChartData, let windowSize = chartData.windowSize, windowSize > 0 {
             let totalPoints = chartData.dataSets.dataPoints.count
-            if totalPoints > 0, totalPoints < windowSize {
+            if totalPoints > 0, totalPoints > windowSize {
                 let factor = CGFloat(totalPoints) / CGFloat(windowSize)
                 return factor
             }
@@ -39,6 +39,12 @@ internal struct XAxisLabels<T>: ViewModifier where T: CTLineBarChartDataProtocol
     
     func contentWidth(geo: GeometryProxy) -> CGFloat {
         return geo.size.width * scaleFactor()
+    }
+    
+    func getFormattedDate(date: Date, format: String) -> String {
+        let dateformat = DateFormatter()
+        dateformat.dateFormat = format
+        return dateformat.string(from: date)
     }
     
     internal func body(content: Content) -> some View {
@@ -70,13 +76,16 @@ internal struct XAxisLabels<T>: ViewModifier where T: CTLineBarChartDataProtocol
                 }
                 .onAppear {
 //                    chartData.dataSets.dataPoints[0]
-//                    if let chartData = chartData as? RangedBarChartData {
-//                        let index = Int(chartData.dataSets.dataPoints.count/2) - 1
-//                        if index < chartData.dataSets.dataPoints.count, index >= 0 {
-//                            let id = chartData.dataSets.dataPoints[Int(chartData.dataSets.dataPoints.count/2) - 1].id
-//                            proxy.scrollTo(id, anchor: .topLeading)
-//                        }
-//                    }
+                    if let chartData = chartData as? RangedBarChartData, let firstDate = chartData.firstDate {
+                        
+                        if let index = chartData.dataSets.dataPoints.firstIndex(where: {
+                            return getFormattedDate(date: $0.userData ?? Date(), format: "yyyy-MM-dd") == getFormattedDate(date: firstDate, format: "yyyy-MM-dd")
+                        }) {
+                            
+                            let id = chartData.dataSets.dataPoints[index].id
+                            proxy.scrollTo(id, anchor: .topLeading)
+                        }
+                    }
                 }
             }
         }

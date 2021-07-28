@@ -375,6 +375,7 @@ internal struct RangedBarChartColourCell<CD:RangedBarChartData>: View {
     }
 }
 
+
 // MARK: Gradient
 internal struct RangedBarChartColoursCell<CD:RangedBarChartData>: View {
     

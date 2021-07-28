@@ -29,6 +29,8 @@ public final class RangedBarChartData: CTRangedBarChartDataProtocol, GetDataProt
     
     // how many datapoints are visible from the entire dataset
     @Published public var windowSize: Int?
+    // if this is available the window will start with this value
+    @Published public var firstDate: Date?
     
     // Publishable
     public var subscription = SubscriptionSet().subscription
@@ -57,7 +59,8 @@ public final class RangedBarChartData: CTRangedBarChartDataProtocol, GetDataProt
         barStyle: BarStyle = BarStyle(),
         chartStyle: BarChartStyle = BarChartStyle(),
         noDataText: Text = Text("No Data"),
-        windowSize: Int? = nil
+        windowSize: Int? = nil,
+        firstDate: Date? = nil
     ) {
         self.dataSets = dataSets
         self.metadata = metadata
@@ -67,6 +70,7 @@ public final class RangedBarChartData: CTRangedBarChartDataProtocol, GetDataProt
         self.chartStyle = chartStyle
         self.noDataText = noDataText
         self.windowSize = windowSize
+        self.firstDate = firstDate
         
         self.legends = [LegendData]()
         self.viewData = ChartViewData()

@@ -20,6 +20,7 @@ public struct RangedBarDataPoint: CTRangedBarDataPoint {
     public var date: Date?
     public var colour: ColourStyle
     public var legendTag: String = ""
+    public var userData: Date?
     
     /// Data model for a single data point with colour for use with a ranged bar chart.
     /// - Parameters:
@@ -35,7 +36,8 @@ public struct RangedBarDataPoint: CTRangedBarDataPoint {
         xAxisLabel: String? = nil,
         description: String? = nil,
         date: Date? = nil,
-        colour: ColourStyle = ColourStyle(colour: .red)
+        colour: ColourStyle = ColourStyle(colour: .red),
+        userData: Date? = nil
     ) {
         self.upperValue = upperValue
         self.lowerValue = lowerValue
@@ -43,6 +45,7 @@ public struct RangedBarDataPoint: CTRangedBarDataPoint {
         self.description = description
         self.date = date
         self.colour = colour
+        self.userData = userData
     }
     
     public typealias ID = UUID

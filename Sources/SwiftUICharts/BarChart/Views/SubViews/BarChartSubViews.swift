@@ -177,8 +177,11 @@ internal struct RangedBarChartDataPointSubView<CD:RangedBarChartData>: View {
     
     private let chartData: CD
     
-    internal init(chartData: CD) {
+    var pointTapped: ((Date?) -> Void)?
+    
+    internal init(chartData: CD, pointTapped: ((Date?) -> Void)? = nil) {
         self.chartData = chartData
+        self.pointTapped = pointTapped
     }
     
     internal var body: some View {
@@ -216,6 +219,9 @@ internal struct RangedBarChartDataPointSubView<CD:RangedBarChartData>: View {
                                             endPoint: endPoint,
                                             barSize: geo.frame(in: .local))
                 }
+            }
+            .onTapGesture {
+                pointTapped?(dataPoint.userData)
             }
         }
     }

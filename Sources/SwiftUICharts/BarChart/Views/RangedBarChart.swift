@@ -46,10 +46,13 @@ public struct RangedBarChart<ChartData>: View where ChartData: RangedBarChartDat
     
     @ObservedObject private var chartData: ChartData
     
+    var pointTapped: ((Date?) -> Void)?
+    
     /// Initialises a bar chart view.
     /// - Parameter chartData: Must be RangedBarChartData model.
-    public init(chartData: ChartData) {
+    public init(chartData: ChartData, pointTapped: ((Date?) -> Void)? = nil) {
         self.chartData = chartData
+        self.pointTapped = pointTapped
     }
 
     public var body: some View {
@@ -61,7 +64,7 @@ public struct RangedBarChart<ChartData>: View where ChartData: RangedBarChartDat
                         RangedBarChartBarStyleSubView(chartData: chartData)
                             .accessibilityLabel(Text("\(chartData.metadata.title)"))
                     case .dataPoints:
-                        RangedBarChartDataPointSubView(chartData: chartData)
+                        RangedBarChartDataPointSubView(chartData: chartData, pointTapped: pointTapped)
                             .accessibilityLabel(Text("\(chartData.metadata.title)"))
                     }
                 }
