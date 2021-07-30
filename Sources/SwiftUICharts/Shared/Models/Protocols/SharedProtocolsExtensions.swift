@@ -329,7 +329,10 @@ extension CTStandardDataPointProtocol where Self: CTPieDataPoint {
 extension CTRangeDataPointProtocol {
     /// Data point's value as a string
     public func valueAsString(specifier: String) -> String {
-        String(format: specifier, self.lowerValue) + "-" + String(format: specifier, self.upperValue)
+        if self.lowerValue == self.upperValue {
+            return String(format: specifier, self.lowerValue)
+        }
+        return String(format: specifier, self.lowerValue) + "-" + String(format: specifier, self.upperValue)
     }
 }
 

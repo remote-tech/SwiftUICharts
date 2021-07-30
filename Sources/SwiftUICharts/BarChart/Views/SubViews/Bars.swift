@@ -360,7 +360,8 @@ internal struct RangedBarChartColourCell<CD:RangedBarChartData>: View {
                                  bl: chartData.barStyle.cornerRadius.bottom,
                                  br: chartData.barStyle.cornerRadius.bottom)
             .fill(colour)
-            .scaleEffect(y: startAnimation ? CGFloat((dataPoint.upperValue - dataPoint.lowerValue) / chartData.range) : 0, anchor: .center)
+            // the actual size of the bars are controlled by the scale,
+            .scaleEffect(y: startAnimation ? CGFloat(((dataPoint.upperValue - dataPoint.lowerValue) < 1 ? chartData.range/40 : (dataPoint.upperValue - dataPoint.lowerValue)) / chartData.range) : 0, anchor: .center)
             .scaleEffect(x: chartData.barStyle.barWidth, anchor: .center)
             .position(x: barSize.midX,
                       y: chartData.getBarPositionX(dataPoint: dataPoint, height: barSize.height))
